@@ -7,6 +7,17 @@ import java.awt.event.KeyListener;
 import java.util.Random;
 
 public class GameJF extends JFrame implements KeyListener {
+    //胜利
+    int win[][]=new int[][]{
+            {1,2,3,4},
+            {5,6,7,8},
+            {9,10,11,12},
+            {13,14,15,0},
+    };
+
+    String path="image\\animal\\animal2\\";
+    int x,y;//记录空白图片的位置
+    int m,n;//记录坐标
     int[][]a=new int[4][4];//创建二维数组放到成员变量的位置，因为有两个方法都要用到
     public GameJF(){
         initJF();//ctrl+alt+m抽取方法，方便管理
@@ -18,6 +29,9 @@ public class GameJF extends JFrame implements KeyListener {
 
         //初始化图片
         initimg();
+
+        //给整个界面添加键盘监听事件
+        this.addKeyListener(this);
 
         this.setVisible(true);//让界面显示出来，一般写在最后
     }//抽取方法之后非常简单
@@ -33,10 +47,16 @@ public class GameJF extends JFrame implements KeyListener {
 
         }
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                a[i][j]=arr[i*4+j];
+        for (n = 0; n < 4; n++) {
+            for (m = 0; m < 4; m++) {
+                a[n][m]=arr[n *4+ m];
 
+
+                if(a[n][m]==0){
+                    x= m;
+                    y= n;
+
+                }
             }
 
         }
@@ -45,15 +65,26 @@ public class GameJF extends JFrame implements KeyListener {
 
     private void initimg() {
 
-        for (int j = 0; j < 4; j++) {
-            for (int i = 0; i < 4; i++) {
-                int number=a[i][j];
+
+        //删除已经出现的所有图片，此为第一步，不然所有出现在上面的方法都不会显示，因为刚显示就被删除了
+        this.getContentPane().removeAll();
+
+        //胜利
+        if(victory()){
+            JLabel label=new JLabel(new ImageIcon("image\\win.png"));
+            label.setBounds(200,300,197,73);
+            this.getContentPane().add(label);
+        }
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                int number=a[j][i];
                 //创建一个图片ImageIcon的对象
-                ImageIcon icon = new ImageIcon("image\\animal\\animal2\\"+number+".jpg");
+                ImageIcon icon = new ImageIcon(path+number+".jpg");
                 //创建一个JLabel的对象（管理容器）
                 JLabel label =new JLabel(icon);
                 //指定图像位置
-                label.setBounds(100*i+95,100*j+125,100,100);
+                label.setBounds(100* i +95,100* j +125,100,100);
                 //把管理容器添加到界面中
                 //this.add(label);//this指的是当前界面
 
@@ -70,6 +101,8 @@ public class GameJF extends JFrame implements KeyListener {
         this.getContentPane().add(label2);
 
 
+        //刷新界面
+        this.getContentPane().repaint();
 
     }
 
@@ -124,11 +157,98 @@ public class GameJF extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        //按住a不松会显示完整图片
+        int code=e.getKeyCode();
+        if(code==65){
+
+            //删除所有图片
+            this.getContentPane().removeAll();
+            //添加完整图片
+            JLabel all=new JLabel(new ImageIcon(path+"all.jpg"));
+            all.setBounds(95,125,400,400);
+            this.getContentPane().add(all);
+
+            //添加背景图片
+            ImageIcon icon2=new ImageIcon("image\\background.png");
+            JLabel label2=new JLabel(icon2);
+            label2.setBounds(40,25,508,560);
+            this.getContentPane().add(label2);
+
+            //刷新界面
+            this.getContentPane().repaint();
+        }
 
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
+        //胜利了就不能再移动了
+        if(victory()) return;
+
+        int code=e.getKeyCode();
+        if(code==37){
+            if(x==3) return;
+            int temp=a[y][x];
+            a[y][x]=a[y][x+1];
+            a[y][x+1]=temp;
+            x++;
+            System.out.println("向左移动");
+        }
+        if(code==38){
+            if(y==3) return;
+            int temp=a[y][x];
+            a[y][x]=a[y+1][x];
+            a[y+1][x]=temp;
+            y++;
+            System.out.println("向下移动");
+        }
+        if(code==39){
+            if(x==0) return;
+            int temp=a[y][x];
+            a[y][x]=a[y][x-1];
+            a[y][x-1]=temp;
+            x--;
+            System.out.println("向右移动");
+        }
+        if(code==40){
+            if(y==0) return;
+            int temp=a[y][x];
+            a[y][x]=a[y-1][x];
+            a[y-1][x]=temp;
+            y--;
+            System.out.println("向上移动");
+        }
+        if(code==65){
+            initimg();
+        }
+        if(code==87){
+            x=3;
+            y=3;
+            a=new int[][]{
+                    {1,2,3,4},
+                    {5,6,7,8},
+                    {9,10,11,12},
+                    {13,14,15,0},
+            };
+            //Java 二维数组 a[第一][第二]，第一个索引是行（y方向），第二个索引是列（x方向）。因为这一点搞错,理清楚数组的横方向和竖方向
+            initimg();
+        }
+
+
+
+        //刷新页面
+        initimg();
+    }
+
+    public boolean victory(){
+        //判断胜利
+        for (int i = 0; i < win.length; i++) {
+            for (int j = 0; j < win[i].length; j++) {
+                if (win[i][j] != a[i][j])
+                    return false;
+            }
+        }
+        return true;
     }
 }
