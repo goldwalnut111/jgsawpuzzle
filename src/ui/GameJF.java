@@ -2,11 +2,13 @@ package ui;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
 
-public class GameJF extends JFrame implements KeyListener {
+public class GameJF extends JFrame implements KeyListener, ActionListener {
     //胜利
     int win[][]=new int[][]{
             {1,2,3,4},
@@ -14,6 +16,8 @@ public class GameJF extends JFrame implements KeyListener {
             {9,10,11,12},
             {13,14,15,0},
     };
+
+    int step;
 
     String path="image\\animal\\animal2\\";
     int x,y;//记录空白图片的位置
@@ -69,11 +73,16 @@ public class GameJF extends JFrame implements KeyListener {
         //删除已经出现的所有图片，此为第一步，不然所有出现在上面的方法都不会显示，因为刚显示就被删除了
         this.getContentPane().removeAll();
 
+        //记步数
+        JLabel label=new JLabel("步数:"+step);
+        label.setBounds(30,30,100,20);
+        this.getContentPane().add(label);
+
         //胜利
         if(victory()){
-            JLabel label=new JLabel(new ImageIcon("image\\win.png"));
-            label.setBounds(200,300,197,73);
-            this.getContentPane().add(label);
+            JLabel label2=new JLabel(new ImageIcon("image\\win.png"));
+            label2.setBounds(200,300,197,73);
+            this.getContentPane().add(label2);
         }
 
         for (int i = 0; i < 4; i++) {
@@ -82,15 +91,15 @@ public class GameJF extends JFrame implements KeyListener {
                 //创建一个图片ImageIcon的对象
                 ImageIcon icon = new ImageIcon(path+number+".jpg");
                 //创建一个JLabel的对象（管理容器）
-                JLabel label =new JLabel(icon);
+                JLabel label3 =new JLabel(icon);
                 //指定图像位置
-                label.setBounds(100* i +95,100* j +125,100,100);
+                label3.setBounds(100* i +95,100* j +125,100,100);
                 //把管理容器添加到界面中
                 //this.add(label);//this指的是当前界面
 
-                label.setBorder(new BevelBorder(0));
+                label3.setBorder(new BevelBorder(0));
 
-                this.getContentPane().add(label);//先获取隐藏图片再
+                this.getContentPane().add(label3);//先获取隐藏图片再
             }
 
         }
@@ -193,6 +202,7 @@ public class GameJF extends JFrame implements KeyListener {
             a[y][x]=a[y][x+1];
             a[y][x+1]=temp;
             x++;
+            step++;
             System.out.println("向左移动");
         }
         if(code==38){
@@ -201,6 +211,7 @@ public class GameJF extends JFrame implements KeyListener {
             a[y][x]=a[y+1][x];
             a[y+1][x]=temp;
             y++;
+            step++;
             System.out.println("向下移动");
         }
         if(code==39){
@@ -209,6 +220,7 @@ public class GameJF extends JFrame implements KeyListener {
             a[y][x]=a[y][x-1];
             a[y][x-1]=temp;
             x--;
+            step++;
             System.out.println("向右移动");
         }
         if(code==40){
@@ -217,6 +229,7 @@ public class GameJF extends JFrame implements KeyListener {
             a[y][x]=a[y-1][x];
             a[y-1][x]=temp;
             y--;
+            step++;
             System.out.println("向上移动");
         }
         if(code==65){
@@ -250,5 +263,10 @@ public class GameJF extends JFrame implements KeyListener {
             }
         }
         return true;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }
