@@ -19,6 +19,13 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
 
     int step;
 
+    //创建选项下面的条目
+    JMenuItem replay=new JMenuItem("重新游戏");
+    JMenuItem relogin=new JMenuItem("重新登陆");
+    JMenuItem closegame=new JMenuItem("关闭游戏");
+
+    JMenuItem jionqq=new JMenuItem("加入QQ群");
+
     String path="image\\animal\\animal2\\";
     int x,y;//记录空白图片的位置
     int m,n;//记录坐标
@@ -126,12 +133,9 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
         JMenu function = new JMenu("菜单");
         JMenu aboutus = new JMenu("关于我们");
 
-        //创建选项下面的条目
-        JMenuItem replay=new JMenuItem("重新游戏");
-        JMenuItem relogin=new JMenuItem("重新登陆");
-        JMenuItem closegame=new JMenuItem("关闭游戏");
 
-        JMenuItem jionqq=new JMenuItem("加入QQ群");
+
+
 
         //将每一个选项下面的条目添加到选项中
         function.add(replay);
@@ -140,6 +144,13 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
         aboutus.add(jionqq);
         menuBar.add(function);
         menuBar.add(aboutus);
+
+        //给菜单栏设置点击事件
+        replay.addActionListener(this);
+        relogin.addActionListener(this);
+        closegame.addActionListener(this);
+        jionqq.addActionListener(this);
+
         this.setJMenuBar(menuBar);//给整个界面设置菜单
     }
 
@@ -267,6 +278,44 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        //获取当前被点击的条目对象
+        Object obj = e.getSource();
+
+        if(obj==replay){
+            step=0;
+            initdata();
+            initimg();
+
+        }
+        if(obj==relogin){
+            //关闭当前游戏界面
+            this.setVisible(false);
+            //打开登陆界面
+            new LoginJF();
+        }
+        if(obj==closegame){
+            //只能关闭窗口不能关闭进程
+            //this.setVisible(false);
+
+            //直接关闭虚拟机
+            System.exit(0);
+
+        }
+        if(obj==jionqq){
+            //设置一个弹框对象
+            JDialog dialog=new JDialog();
+            JLabel qq=new JLabel(new ImageIcon("image\\about.png"));
+            qq.setBounds(0,0,258,258);
+            dialog.getContentPane().add(qq);
+            dialog.setSize(258,258);
+            dialog.setAlwaysOnTop(true);
+            dialog.setLocationRelativeTo(null);
+            //弹窗不关闭则无法接着下面的动作
+            dialog.setModal(true);
+            dialog.setVisible(true);
+
+        }
 
     }
 }
