@@ -20,13 +20,18 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
     int step;
 
     //创建选项下面的条目
+    JMenu replace=new JMenu("更换图片");
     JMenuItem replay=new JMenuItem("重新游戏");
     JMenuItem relogin=new JMenuItem("重新登陆");
     JMenuItem closegame=new JMenuItem("关闭游戏");
+    JMenuItem girl=new JMenuItem("人像");
+    JMenuItem animal=new JMenuItem("动物");
+    JMenuItem sports=new JMenuItem("运动");
+
 
     JMenuItem jionqq=new JMenuItem("加入QQ群");
 
-    String path="image\\animal\\animal2\\";
+    String path="image\\animal\\animal1\\";
     int x,y;//记录空白图片的位置
     int m,n;//记录坐标
     int[][]a=new int[4][4];//创建二维数组放到成员变量的位置，因为有两个方法都要用到
@@ -138,6 +143,10 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
 
 
         //将每一个选项下面的条目添加到选项中
+        function.add(replace);
+        replace.add(girl);
+        replace.add(animal);
+        replace.add(sports);
         function.add(replay);
         function.add(relogin);
         function.add(closegame);
@@ -145,11 +154,15 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
         menuBar.add(function);
         menuBar.add(aboutus);
 
+
         //给菜单栏设置点击事件
         replay.addActionListener(this);
         relogin.addActionListener(this);
         closegame.addActionListener(this);
         jionqq.addActionListener(this);
+        girl.addActionListener(this);
+        animal.addActionListener(this);
+        sports.addActionListener(this);
 
         this.setJMenuBar(menuBar);//给整个界面设置菜单
     }
@@ -279,6 +292,9 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        //随机生成数字来随机图片
+        Random r=new Random();
+        int number=r.nextInt(16)+1;
         //获取当前被点击的条目对象
         Object obj = e.getSource();
 
@@ -316,6 +332,19 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
             dialog.setVisible(true);
 
         }
+        if(obj==girl){
+            path="image\\girl\\girl"+number+"\\";
+            initimg();
+
+        }
+        if(obj==animal){
+            path="image\\animal\\animal"+number+"\\";
+            initimg();
+        }
+        if(obj==sports)
+            path="image\\sports\\sports"+number+"\\";
+            initimg();
+
 
     }
 }
