@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class GameJF extends JFrame implements KeyListener, ActionListener {
     //胜利
-    int win[][]=new int[][]{
+    int[][] win =new int[][]{
             {1,2,3,4},
             {5,6,7,8},
             {9,10,11,12},
