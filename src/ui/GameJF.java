@@ -294,7 +294,9 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
 
         //随机生成数字来随机图片
         Random r=new Random();
-        int number=r.nextInt(16)+1;
+        int number1=r.nextInt(8)+1;
+        int number2=r.nextInt(13)+1;
+        int number3=r.nextInt(10)+1;
         //获取当前被点击的条目对象
         Object obj = e.getSource();
 
@@ -333,16 +335,16 @@ public class GameJF extends JFrame implements KeyListener, ActionListener {
 
         }
         if(obj==girl){
-            path="image\\girl\\girl"+number+"\\";
+            path="image\\girl\\girl"+number1+"\\";
             initimg();
 
         }
         if(obj==animal){
-            path="image\\animal\\animal"+number+"\\";
+            path="image\\animal\\animal"+number2+"\\";
             initimg();
         }
         if(obj==sports)
-            path="image\\sports\\sports"+number+"\\";
+            path="image\\sport\\sport"+number3+"\\";
             initimg();
 
 
